@@ -33,6 +33,10 @@ match_file_kmers = []
 match_file_pos = []
 match_file_sequence = []
 
+matched_kmers = []
+matched_kmers_position = []
+counter = 0
+
 for j in range(len(sequence_input)):
     for l in range(len(sequence_input[j]) - (int(k_value)) + 1):
         kmers_input.append(sequence_input[j][l:l + (int(k_value))])
@@ -49,21 +53,38 @@ with open ('db-' + k_value + '.txt', 'r') as match_file:
         match_file_pos.append(line.split('\t')[2].rstrip('\n'))
         line = match_file.readline()
 
-# print(match_file_kmers)
-# print(match_file_pos)
 
 
-print('KMER Name' + '\t' + 'Seq.No.in Query' + '\t' + 'Position in QUERY' + '\t' + 'Seq.No. in DB' + '\t' + 'Position in DB')
+print ('\n                                                   MATCHED K-MERS                               \n')
+print('KMER Name' + '\t\t' + 'Seq.No.in QUERY' + '\t\t' + 'Position in QUERY' + '\t\t' + 'Seq.No. in DB' + '\t\t' + 'Position in DB')
 
 for i in range(len(kmers_input)):
     if kmers_input[i] in match_file_kmers:
+        counter += 1
         db_index = match_file_kmers.index(kmers_input[i])
         match_file_kmers[db_index] = ''
-        print('%s' % (kmers_input[i]) + '\t\t' + '%d' % int(seq_input[i]) + '\t\t\t' + '%d' % int(pos_input[i]) + '\t\t\t' + '%d' % int(match_file_sequence[db_index]) + '\t\t\t' + '%d' % int(match_file_pos[db_index]))
-        # print('%d seq in QUERY' % int(seq_input[i]))
-        # print('%d position in QUERY' % int(pos_input[i]))
-        # print('%d seq in DB' % int(match_file_sequence[db_index]))
-        # print('%d position in DB' % int(match_file_pos[db_index]))
+        matched_kmers.append(kmers_input[i])
+        matched_kmers_position.append(pos_input[i])
 
-# for k in range(len(match_file_kmers)):
-# for m in range(len(kmers_input)):
+        print('%s' % (kmers_input[i]) + '\t\t\t\t' + '%d' % int(seq_input[i]) + '\t\t\t\t\t' + '%d' % int(pos_input[i]) + '\t\t\t\t\t' + '%d' % int(match_file_sequence[db_index]) + '\t\t\t\t\t' + '%d' % int(match_file_pos[db_index]))
+
+print('\nNumber of matched K-MERS : %d\n' % counter)
+
+print(matched_kmers_position)
+print(kmers_input)
+
+
+# cont_seq = []
+# for m in range(len(matched_kmers_position)):
+#     temp_a = matched_kmers_position[m+1]
+#     temp_b = matched_kmers_position[m] + 1
+#     # print(temp_a)
+#     # print(temp_b)
+#     if temp_a == temp_b:
+#         # cont_seq.append(kmers_input[m:m+1])
+#         # cont_seq = cont_seq.join(kmers_input[m:m + 1])
+#         cont_seq.append(matched_kmers[m])
+#         print("It can be a continuous sequence")
+#     else:
+#         print("Cannot be continuous")
+#     print(cont_seq)
